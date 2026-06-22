@@ -15,6 +15,18 @@ public sealed class WorkerRepository(IDbConnectionFactory factory)
               VALUES (@Id, @IniciadoEm, @Status, @TipoExecucao, @AlertaEnviado)", log);
     }
 
+    /// <summary>true se já existe uma execução AGENDADA com <c>iniciado_em</c> no intervalo [inicio, fim).</summary>
+    public async Task<bool> ExisteAgendadaNoIntervaloAsync(DateTime inicioUtc, DateTime fimUtc, CancellationToken ct = default)
+    {
+        using var conn = await factory.OpenPostgresAsync(ct);
+        var n = await conn.ExecuteScalarAsync<int>(
+            @"SELECT COUNT(*) FROM logs_execucao
+               WHERE tipo_execucao = 'agendada'
+                 AND iniciado_em >= @inicio AND iniciado_em < @fim",
+            new { inicio = inicioUtc, fim = fimUtc });
+        return n > 0;
+    }
+
     public async Task AtualizarLogAsync(LogExecucao log, CancellationToken ct = default)
     {
         using var conn = await factory.OpenPostgresAsync(ct);

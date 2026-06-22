@@ -25,6 +25,23 @@ public sealed class VerificacaoService(
 {
     public async Task ExecutarAsync(string tipoExecucao, CancellationToken ct = default)
     {
+        // Idempotência diária: execução AGENDADA não roda duas vezes no mesmo dia (fuso São Paulo).
+        // Execução MANUAL nunca é bloqueada.
+        if (tipoExecucao == "agendada" && settings.SkipSeJaExecutadoHoje)
+        {
+            var tz = SchedulerSetup.SaoPaulo();
+            var agoraSp = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, tz);
+            var inicioDiaSp = new DateTimeOffset(agoraSp.Year, agoraSp.Month, agoraSp.Day, 0, 0, 0, agoraSp.Offset);
+            var inicioUtc = inicioDiaSp.UtcDateTime;
+            var fimUtc = inicioDiaSp.AddDays(1).UtcDateTime;
+
+            if (await workerRepo.ExisteAgendadaNoIntervaloAsync(inicioUtc, fimUtc, ct))
+            {
+                logger.LogInformation("verificacao_agendada_ignorada motivo=ja_executado_hoje");
+                return;
+            }
+        }
+
         var sw = Stopwatch.StartNew();
         var log = new LogExecucao
         {
