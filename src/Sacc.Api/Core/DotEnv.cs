@@ -8,15 +8,30 @@ public static class DotEnv
 {
     public static void Load()
     {
-        foreach (var dir in new[] { Directory.GetCurrentDirectory(), AppContext.BaseDirectory })
+        // Procura o .env subindo a árvore de diretórios a partir do diretório atual e do binário.
+        // Cobre tanto `dotnet run` da raiz do repo quanto o debug no VS (CWD = pasta do projeto).
+        foreach (var start in new[] { Directory.GetCurrentDirectory(), AppContext.BaseDirectory })
         {
-            var path = Path.Combine(dir, ".env");
-            if (File.Exists(path))
+            var path = FindUpwards(start);
+            if (path is not null)
             {
                 LoadFile(path);
                 return;
             }
         }
+    }
+
+    private static string? FindUpwards(string startDir)
+    {
+        var dir = new DirectoryInfo(startDir);
+        while (dir is not null)
+        {
+            var candidate = Path.Combine(dir.FullName, ".env");
+            if (File.Exists(candidate))
+                return candidate;
+            dir = dir.Parent;
+        }
+        return null;
     }
 
     private static void LoadFile(string path)
