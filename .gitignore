@@ -1,0 +1,232 @@
+###############################################################################
+# .gitignore — SACC API (.NET 8 / C# / Dapper / JWT)
+###############################################################################
+
+#######################################
+# Segredos e configuração de ambiente
+#######################################
+# NUNCA versionar arquivos com SECRET_KEY, senhas SMTP, credenciais do ERP/DB,
+# INITIAL_ADMIN_PASSWORD, etc.
+.env
+.env.*
+!.env.example
+*.env
+.env.temp
+.env.local
+.env.development
+.env.production
+appsettings.*.local.json
+secrets.json
+*.secrets.json
+
+# User Secrets do .NET (dotnet user-secrets) — o secrets.json fica fora do repo
+# por padrão, mas ignoramos caches locais por garantia.
+**/secrets/
+
+#######################################
+# Build / saída de compilação .NET
+#######################################
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+publish/
+PublishOutput/
+*.binlog
+
+# Resultados de build / restore
+project.lock.json
+project.fragment.lock.json
+*.nuget.props
+*.nuget.targets
+
+#######################################
+# NuGet
+#######################################
+*.nupkg
+*.snupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nuget.dgspec.json
+.nuget/
+
+#######################################
+# Testes / cobertura
+#######################################
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+TestResults/
+.coverlet/
+nlog-internal.log
+
+#######################################
+# Visual Studio
+#######################################
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.vspscc
+*.vssscc
+*.pidb
+*.svclog
+*.scc
+.builds
+*.dbmdl
+*.dbproj.schemaview
+*.jfm
+*.pfx
+*.publishsettings
+orleans.codegen.cs
+*.psess
+*.vsp
+*.vspx
+*.sap
+*.cachefile
+*.VisualState.xml
+*.GhostDoc.xml
+_Chutzpah*
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+
+#######################################
+# Visual Studio Code
+#######################################
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+#######################################
+# JetBrains Rider / ReSharper
+#######################################
+.idea/
+*.sln.iml
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+#######################################
+# Ferramentas / caches de build
+#######################################
+.fake/
+.dotnet/
+.tools/
+BenchmarkDotNet.Artifacts/
+*.received.*
+
+#######################################
+# Roslyn / análise
+#######################################
+*.ide/
+.localhistory/
+*.GhostDoc.xml
+healthchecksdb
+
+#######################################
+# Logs e dumps
+#######################################
+*.log
+*.tlog
+*.err
+*.dmp
+*.mdmp
+crash-*.txt
+hs_err_pid*
+
+#######################################
+# Banco de dados local / arquivos temporários
+#######################################
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+*.mdf
+*.ldf
+*.bak
+
+#######################################
+# Certificados e chaves (NUNCA versionar)
+#######################################
+*.pfx
+*.p12
+*.key
+*.pem
+*.crt
+*.cer
+*.der
+
+#######################################
+# Docker
+#######################################
+# Mantém Dockerfile e compose versionados; ignora overrides locais.
+docker-compose.override.yml
+.dockerignore.local
+
+#######################################
+# Sistema operacional
+#######################################
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+#######################################
+# Diversos
+#######################################
+*.tmp
+*.temp
+*.swp
+*.swo
+*.orig
+*.rej
+node_modules/
